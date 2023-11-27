@@ -1,0 +1,35 @@
+version: "3.5"
+
+networks:
+  default:
+    name: subnetwork
+    ipam:
+      config:
+        - subnet: ${SUBNET}
+
+services:
+  kali:
+    container_name: kali
+    build:
+      context: ./kali
+      dockerfile: Dockerfile
+    hostname: kali
+    tty: true
+    privileged: true
+    networks:
+      default:
+        ipv4_address: ${KALI_ADDRESS}
+    volumes:
+      - ./kali:/app
+
+  activemq:
+    container_name: activemq
+    build:
+      context: ./activemq
+      dockerfile: Dockerfile
+    hostname: activemq
+    networks:
+      default:
+        ipv4_address: ${ACTIVEMQ_ADDRESS}
+    volumes:
+      - ./activemq:/usr/src/activemq
